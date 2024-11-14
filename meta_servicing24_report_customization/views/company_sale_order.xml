@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Inherit Sale Order Form to Add Warrenty Field and Print Button -->
+    <!-- <record id="custom_warrenty_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">custom.warrenty.sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            
+        </field>
+    </record> -->
+    <!-- Inherit Sale Order Form to Add Signature and Email Template Pages -->
+    <record id="sign_person_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">sign.person.sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Signature Page -->
+            <!-- <xpath expr="//notebook/page[@name='order_lines']/field[@name='order_line']/tree/field[@name='name']" position="after">
+                <field name="warrenty" string="Warranty" invisible="1"/>
+            </xpath> -->
+            <!-- Add Print Button before Payment Capture Button -->
+            <xpath expr="//button[@name='payment_action_capture']" position="before">
+                <button name="print_quotation" string="Print" class="oe_highlight" type="object"/>
+                <!-- <button name="print_quotation" string="Finantial Offer " type="object" class="btn-primary"  invisible="company_id != 2"/> -->
+            </xpath>
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Add Signature">
+                    <group>
+                        <field name="employee1"/>
+                        <field name="employee2"/>
+                    </group>
+                </page>
+            </xpath>
+            <!-- Add Email Template Page -->
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Add Email Template">
+                    <group>
+                        <field name="quotation_subject"/>
+                        <field name="quotation_body"/>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="attn"/>
+            </xpath>
+            <xpath expr = "//tree/field[@name='name']" position="before">
+                <field name="lot_serial_number_id" string="Part No" optional="hide"/>
+                <!-- <field name="warrenty" string="Warranty"/> -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

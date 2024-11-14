@@ -1,0 +1,117 @@
+<odoo>
+    <template id="account_payment_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div style="width: 8cm; height: 1cm;"></div>
+                        <t t-if="doc.company_id.id == 1">
+                            <h2 class="text-center" style="color: #32906B;">Money Receipt</h2>
+                        </t>
+                        <t t-if="doc.company_id.id == 2">
+                            <h2 class="text-center" style="color: #D22B2B;">Money Receipt</h2>
+                        </t>
+                        <!-- Serial No and Date -->
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span style="font-size: 18px;">Serial No: </span>
+                                    </div>
+                                    <div class="col-10">
+                                        <span style="font-size: 18px;" t-field="doc.display_name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                            </div>
+                            <div class="col-4 offset-2">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <span style="font-size: 18px;">Date: </span>
+                                    </div>
+                                    <div class="col-10">
+                                        <span style="font-size: 18px;" t-field="doc.date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Received from -->
+                        <div class="row mt-3">
+                            <div class="col-3">
+                                <p style="font-size: 18px;">Received with thanks from</p>
+                            </div>
+                            <div class="col-9" style="border-bottom: 1px dotted black; margin-left: 16px;">
+                                <span style="font-size: 18px;" t-field="doc.partner_id"/>
+                            </div>
+                        </div>
+                        <!-- By Cash/Cheque No -->
+                        <div class="row mt-3">
+                            <div class="col-3">
+                                <p style="font-size: 18px;">By &#x25A1; Cash/ &#x25A1;Cheque No</p>
+                            </div>
+                            <div class="col-4" style="border-bottom: 1px dotted black;"></div>
+                            <div class="col-1 text-center">
+                                <p style="font-size: 18px;">Bank</p>
+                            </div>
+                            <div class="col-2" style="border-bottom: 1px dotted black;"></div>
+                            <div class="col-1 text-center">
+                                <p style="font-size: 18px;">Date</p>
+                            </div>
+                            <div class="col-2" style="border-bottom: 1px dotted black;"></div>
+                        </div>
+                        <!-- For the Purpose of -->
+                        <div class="row mt-3">
+                            <div class="col-2">
+                                <span style="font-size: 18px;">For the Purpose of</span>
+                            </div>
+                            <div class="col-5" style="border-bottom: 1px dotted black; margin-left: 15px;">
+                                <span style="font-size: 18px;" t-field="doc.customer_ref"></span>
+                            </div>
+                            <div class="col-2 text-center">
+                                <p style="font-size: 18px;">Contact No</p>
+                            </div>
+                            <div class="col-3" style="border-bottom: 1px dotted black;">
+                                <span style="font-size: 18px;" t-esc="doc.partner_id.mobile"></span>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-2">
+                                <p style="font-size: 18px;">Amount in a word</p>
+                            </div>
+                            <div class="col-10" style="border-bottom: 1px dotted black; margin-left: 16px;">
+                                <span style="font-size: 18px;" t-field="doc.amount2word"/>
+                            </div>
+                        </div>
+                        <div style="width: 8cm; height: 2cm;"></div>
+                        <div class="row">
+                            <div class="col-4">
+                                <p style="font-size: 18px;">Total Amount</p>
+                                <p t-esc="'{:.2f}'.format(doc.amount)" style="font-size: 24px;"></p>
+                            </div>
+                            <div class="col-4" style="display: flex; justify-content: center; align-items: center; text-align: center;">
+                                <div style="width: 8cm; height: 1.2cm;"></div>
+                                <p style="font-size: 18px;">Receiver's Signature</p>
+                            </div>
+                            <div class="col-4" style="display: flex; flex-direction: column; align-items: flex-end; text-align: right;">
+                                <div style="width: 8cm; height: 1cm;"></div>
+                                <img t-attf-src="data:image/png;base64,{{ doc.company_id.logo }}" alt="Company Logo" style="max-height: 30px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <record id="action_report_account_payment" model="ir.actions.report">
+        <field name="name">Money Receipt</field>
+        <field name="model">account.payment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">meta_servicing24_report_customization.account_payment_template</field>
+        <field name="report_file">meta_servicing24_report_customization.account_payment_template</field>
+        <field name="print_report_name">'Money Receipt'</field>
+        <field name="attachment" eval="False"/>
+        <field name="binding_model_id" ref="account.model_account_payment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

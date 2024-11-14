@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr = "//button[@name='action_post']" position="before">
+                <button name="print_invoice" string="Print" class="oe_highlight" type="object"/>
+            </xpath>
+            <xpath expr = "//field[@name='payment_reference']" position="after">
+                <field name= "billed_by_em"/>
+                <field name= "contact_person_id"/>
+                <field name= "contact_person_name" invisible="1"/>
+                <field name= "contact_person_email" invisible="1"/>
+                <field name= "contact_person_phone" invisible="1"/>
+                <field name= "contact_person_address" invisible="1"/>
+                <field name= "authorized_sign" widget="image" invisible="1"/>
+                <!-- <field name= "prefix"/>
+                <field name= "custom_invoice_number"/> -->
+            </xpath>
+            <xpath expr = "//field[@name='quantity']" position="before">
+                <field name="lot_serial_number_id" optional="hide"/>
+                <field name="warrenty" string="Warranty"/>
+            </xpath>
+            
+        </field>
+    </record>
+  
+</odoo>

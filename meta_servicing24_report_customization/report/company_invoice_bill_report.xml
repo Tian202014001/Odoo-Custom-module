@@ -1,0 +1,597 @@
+<odoo>
+    <template id="external_layout_standard" inherit_id="web.external_layout_standard">
+        <xpath expr="//ul[@name='company_address_list']" position="replace">
+       
+        </xpath>
+        <!-- <xpath expr="//div/div[1]" position="attributes">
+            <attribute name="style" add="display: none;"/>
+        </xpath> -->
+        <xpath expr="//div[@class='row zero_min_height']" position="attributes">
+            <attribute name="style" add="display: none;"/>
+        </xpath>
+        <xpath expr="//div[@t-attf-class='footer o_standard_footer o_company_#{company.id}_layout']" position="replace">
+            <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout">
+                <div>
+                    <ul class="list-inline mb4">
+                        <li>
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            <span t-field="company.partner_id.contact_address_inline" style="margin-right: 5px;" />
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                            <span t-field="company.email" style="margin-right: 5px;"  />
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <span t-field="company.phone" style="margin-right: 5px;"  />
+                            <i class="fa fa-globe" aria-hidden="true"></i>
+                            <span t-field="company.website" style="margin-right: 5px;" />
+                        </li>
+                    </ul>
+                    <div style="width: 8cm; height: 0.5cm;">
+                        
+                    </div>
+                    <div t-if="report_type == 'pdf' and display_name_in_footer" class="text-muted">
+                        Custom Document Name:
+                        <span t-out="o.name"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+        <!-- <xpath expr="//div[@t-attf-class='article o_report_layout_standard o_company_#{company.id}_layout {{  'o_report_layout_background' if company.layout_background in ['Geometric', 'Custom']  else  '' }}']/div" position="attributes">
+            <attribute name="style" add="display: none;"/>
+        </xpath> -->
+        <xpath expr="//div[contains(@t-attf-class, 'article o_report_layout_standard')]/div" position="attributes">
+            <attribute name="style" add="display: none;"/>
+        </xpath>
+    </template>
+    <template id="report_invoice_document" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@class='mt-5 clearfix']/div[@class='page mb-4']//h2" position="replace">
+            <t t-if="o.company_id.id == 1 or o.company_id.id == 4 or o.company_id.id == 3">
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col-2" style="margin-right: 0px;">
+                        <t t-if="o.company_id.qr_code_image">
+                            <img t-att-src="'data:company_id.qr_code_image/png;base64,' + o.company_id.qr_code_image.decode('utf-8')" style="width: 120px; height: 120px; object-fit: contain;"/>
+                        </t>
+                    </div>
+                    <div class="col-5" style="display: flex; justify-content: flex-start;">
+                        <div style="border-left: 3px solid #32906B; padding-left: 10px;">
+                            <h4 style="font-size: 18px; margin-bottom: 10px; color: #32906B;">INVOICE | BILL</h4>
+                            <p style="font-size: 14px; margin-bottom: 4px;">
+                                <strong>Date:</strong>
+                                <span t-field="o.invoice_date"/>
+                                <strong>| Invoice No:</strong>
+                                <span t-field="o.name"/>
+                            </p>
+                            <p style="font-size: 14px; margin-bottom: 4px;">
+                                <strong>Sale Order:</strong>
+                                <span t-field="o.invoice_origin"/>
+                            </p>
+                            <p style="font-size: 14px; margin-bottom: 4px;">
+                                <strong>Quotation No:</strong>
+                                <span t-field="o.invoice_origin"/>
+                            </p>
+                            <p style="font-size: 14px; margin-bottom: 4px;">
+                                <strong>Billed By:</strong>
+                                <span t-field="o.billed_by_em"/>
+                                <strong>| Salesperson:</strong>
+                                <span t-field="o.user_id.name"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@id='informations']" position="replace">
+            <t t-if="o.company_id.id == 1 or o.company_id.id == 4 or o.company_id.id == 3">
+                <div style="width: 8cm; height: 1cm;">
+                    <!-- The div will take up the same space as the image -->
+                </div>
+                <hr/>
+                <h2 class="mb-4" style="font-size: 24px;">
+                    <b>Invoice to</b>
+                </h2>
+                <table class="table mt-10 mb-10" name="invoice_customer_information_table" style="border: 1px solid black;">
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <td style="padding: 10px; font-size: 18px;">
+                                <span>Name</span>
+                            </td>
+                            <td width= "35%" style="padding: 10px; font-size: 18px;" name="td_name">
+                                <span t-field="o.partner_id"/>
+                            </td>
+                            <td style="padding: 10px; font-size: 18px;">
+                                <span>Email</span>
+                            </td>
+                            <t t-if="o.contact_person_name">
+                                <td width= "35%" style="padding: 10px; font-size: 18px;">
+                                    <span t-field="o.contact_person_email"/>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td width= "35%" style="padding: 10px; font-size: 18px;">
+                                    <span t-esc="o.partner_id.email"/>
+                                </td>
+                            </t>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; font-size: 18px;">
+                                <span>Contact Person</span>
+                            </td>
+                            <td width= "35%" style="padding: 10px; font-size: 18px;" name="td_contact_person">
+                                <span t-field="o.contact_person_name"/>
+                            </td>
+                            <td style="padding: 10px; font-size: 18px;" rowspan="2">
+                                <span>Address</span>
+                            </td>
+                            <td width= "35%" style="padding: 10px; font-size: 18px;" rowspan="2">
+                                <span t-field="o.partner_id.contact_address_inline"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; font-size: 18px;">
+                                <span>Contact Number</span>
+                            </td>
+                            <t t-if="o.contact_person_name">
+                                <td width= "35%" style="padding: 10px; font-size: 18px;" name="td_contact_person_phone">
+                                    <span t-field="o.contact_person_phone"/>
+                                </td>
+                            </t>
+                            <t t-else="">
+                                <td width= "35%" style="padding: 10px; font-size: 18px;">
+                                    <span t-esc="o.partner_id.mobile"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </thead>
+                </table>
+            </t>
+            <t t-if="o.company_id.id == 2">
+                <div class="row" style="margin-top:40px; text-align:right;" >
+                    <h2 style="font-size:40px;">Invoice</h2>
+                </div>
+                <div class="row" style="text-align:right;">
+                    <h2 style="font-size:16px;" t-esc="o.display_name"/>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-6">
+                        <span style="font-size:16px;">Bill To</span>
+                        <br/>
+                        <b>
+                            <span style="font-size:16px;" t-field="o.partner_id"/>
+                        </b>
+                        <br/>
+                        <span style="font-size:16px;" t-field="o.partner_id.contact_address_inline"/>
+                    </div>
+                    <div class="col-2" style="text-align: left">
+                    </div>
+                    <div class="col-4" >
+                        <div style="text-align: right">
+                            <div>
+                                <Strong style="font-size:16px; padding:5px">Invoice Date:</Strong>
+                                <span style="font-size:16px;" t-field="o.invoice_date"/>
+                            </div>
+                            <div>
+                                <Strong style="font-size:16px;  padding:5px">Terms:</Strong>
+                                <span style="font-size:16px;" t-field="o.invoice_payment_term_id"/>
+                            </div>
+                            <div>
+                                <Strong style="font-size:16px; padding:5px">Due Date:</Strong>
+                                <span style="font-size:16px;" t-field="o.invoice_date_due"/>
+                            </div>
+                            <div>
+                                <Strong style="font-size:16px; padding:5px">P.O.#:</Strong>
+                                <span style="font-size:16px;" t-field="o.invoice_origin"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//table[@name='invoice_line_table']" position="before">
+            <div class="mt-5"></div>
+            <!-- Add margin top here -->
+        </xpath>
+        <xpath expr="//table[@name='invoice_line_table']" position="replace">
+            <t t-if="o.company_id.id == 1 or o.company_id.id == 4 or o.company_id.id == 3">
+                <div class="mt-10">
+                    <table class="table mt-10" style="border: 1px solid black;">
+                        <t t-set="flag1" t-value="0"/>
+                        <t t-set="flag2" t-value="0"/>
+                        <thead style="display: table-row-group; background-color: #1EAF89; color: white;">
+                            <tr>
+                                <th class="text-center" style="padding: 12px; font-size: 18px;">#</th>
+                                <th width="30%" name="th_description" class="text-center" style="padding: 12px; font-size: 18px;">Item Name and Description</th>
+                                <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                                <t t-foreach="lines" t-as="line" t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                    <t t-if="line.lot_serial_number_id">
+                                        <t t-set="flag1" t-value="1"/>
+                                        </t>
+                                    <t t-if="line.warrenty">
+                                        <t t-set="flag2" t-value="1"/>
+                                        </t>
+                                </t>
+                                <t t-if="flag1 == 1">
+                                    <th width="20%" name="th_part_number" class="text-center" style="padding: 12px; font-size: 18px;">Part Number</th>
+                                </t>
+                                <t t-if="flag2 == 1">
+                                    <th name="th_warranty" class="text-center" style="padding: 12px; font-size: 18px;">Warranty</th>
+                                </t>
+                                <th name="th_quantity" class="text-center" style="padding: 12px; font-size: 18px;">
+                                    <span>Quantity</span>
+                                </th>
+                                <th name="th_priceunit" class="text-center" style="padding: 12px; font-size: 18px;">Unit Price(
+                                    <span t-esc="o.currency_id.symbol"/>)
+                                </th>
+                                <th name="th_subtotal" class="text-center" style="padding: 12px; font-size: 18px;">
+                                    <span>Total Price(
+                                        <span t-esc="o.currency_id.symbol"/>)</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="invoice_tbody">
+                            <t t-set="sn" t-value="0"/>
+                            <t t-set="current_subtotal" t-value="0"/>
+                            <t t-set="current_total" t-value="0"/>
+                            <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                            <tr t-foreach="lines" t-as="line" t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="line.display_type == 'product'" name="account_invoice_line_accountable">
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="sn + 1"/>
+                                        <!-- Display Serial Number -->
+                                        <t t-set="sn" t-value="sn + 1"/>
+                                        <!-- Increment Serial Number -->
+                                    </td>
+                                    <td class="text-start" name="account_invoice_line_name" style="padding: 12px; font-size: 18px;">
+                                        <span t-if="line.product_id" t-field="line.product_id.name" t-options="{'widget': 'text'}">Bacon Burger</span>
+                                    </td>
+                                    <t t-if="flag1">
+                                        <td  class="text-end" style="padding: 12px; font-size: 18px;">
+                                            <span t-field="line.lot_serial_number_id.name"></span>
+                                        </td>
+                                    </t>
+                                    <t t-if="flag2">
+                                        <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                            <span t-field="line.warrenty"></span>
+                                        </td>
+                                    </t>
+                                    <td name="td_quantity" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-field="line.quantity"></span>
+                                    </td>
+                                    <td name="td_price_unit" t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" style="padding: 12px; font-size: 18px;">
+                                        <span class="text-nowrap" t-field="line.price_unit"></span>
+                                    </td>
+                                    <td name="td_subtotal" class="text-end o_price_total" style="padding: 12px; font-size: 18px;">
+                                        <t t-esc="'{:,.2f}'.format(line.price_subtotal)"/>
+                                    </td>
+                                </t>
+                            </tr>
+                            <t t-if="line.tax_ids and flag1 and flag2">
+                                <tr>
+                                    <td colspan="6" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.amount_untaxed)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="line.tax_ids and ((flag1 and not flag2) or (not flag1  and flag2))">
+                                <tr>
+                                    <td colspan="5" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.amount_untaxed)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-elif="line.tax_ids and not line.warrenty and not line.lot_serial_number_id">
+                                <tr>
+                                    <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.amount_untaxed)"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-set="tax_totals" t-value="o.tax_totals"/>
+                            <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                                <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                                <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+                                    <t t-set="display_tax_base" t-value="tax_totals['display_tax_base']"/>
+                                    <tr class="text-end" >
+                                        <t t-if="tax_totals['display_tax_base']">
+                                            <t t-if="flag1 and flag2">
+                                                <td colspan="6" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-esc="amount_by_group['tax_group_name']"/>
+                                                    <!-- <span t-if="not amount_by_group['hide_base_amount']" class="text-nowrap">
+on
+                                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                            </span> -->
+                                                </td>
+                                                <td class="text-end o_price_total"  style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-out="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">1.05</span>
+                                                </td>
+                                            </t>
+                                            <t t-elif="flag1 or flag2">
+                                                <td colspan="5" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-esc="amount_by_group['tax_group_name']"/>
+                                                    <!-- <span t-if="not amount_by_group['hide_base_amount']" class="text-nowrap">
+on
+                                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                            </span> -->
+                                                </td>
+                                                <td class="text-end o_price_total"  style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-out="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">1.05</span>
+                                                </td>
+                                            </t>
+                                            <t t-if="not flag1 and not flag2">
+                                                <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-esc="amount_by_group['tax_group_name']"/>
+                                                    <!-- <span t-if="not amount_by_group['hide_base_amount']" class="text-nowrap">
+on
+                                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                            </span> -->
+                                                </td>
+                                                <td class="text-end o_price_total"  style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-out="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">1.05</span>
+                                                </td>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-if="flag1 and flag2">
+                                                <td colspan="6" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                                    <!-- <span> on </span>
+                                            <span class="text-nowrap" t-out="amount_by_group['formatted_tax_group_base_amount']">27.00</span> -->
+                                                </td>
+                                                <td class="text-end o_price_total" style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-esc="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">4.05</span>
+                                                </td>
+                                            </t>
+                                            <t t-elif="flag1 or flag2">
+                                                <td colspan="5" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                                    <!-- <span> on </span>
+                                            <span class="text-nowrap" t-out="amount_by_group['formatted_tax_group_base_amount']">27.00</span> -->
+                                                </td>
+                                                <td class="text-end o_price_total" style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-esc="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">4.05</span>
+                                                </td>
+                                            </t>
+                                            <t t-elif="not flag1 and not flag2">
+                                                <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                                    <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                                    <!-- <span> on </span>
+                                            <span class="text-nowrap" t-out="amount_by_group['formatted_tax_group_base_amount']">27.00</span> -->
+                                                </td>
+                                                <td class="text-end o_price_total" style="padding: 12px; font-size: 18px;">
+                                                    <span class="text-nowrap" t-esc="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">4.05</span>
+                                                </td>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </t>
+                            <tr>
+                                <t t-if="flag1 and flag2">
+                                    <td colspan="6" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Grand Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.tax_totals['amount_total'])"/>
+                                    </td>
+                                </t>
+                                <t t-elif="flag1 or flag2">
+                                    <td colspan="5" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Grand Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.tax_totals['amount_total'])"/>
+                                    </td>
+                                </t>
+                                <t t-elif="not flag1 and not flag2">
+                                    <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <strong>Grand Total</strong>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-esc="'{:,.2f}'.format(o.tax_totals['amount_total'])"/>
+                                    </td>
+                                </t>
+                            </tr>
+                            <tr>
+                                <t t-if="flag1 and flag2">
+                                    <td colspan="7" style="text-align: center; padding: 12px; font-size: 18px;">
+                                        <b>In Words:
+                                            <span t-esc="o.amount2word"/>
+                                        </b>
+                                    </td>
+                                </t>
+                                <t t-elif="flag1 or flag2">
+                                    <td colspan="6" style="text-align: center; padding: 12px; font-size: 18px;">
+                                        <b>In Words:
+                                            <span t-esc="o.amount2word"/>
+                                        </b>
+                                    </td>
+                                </t>
+                                <t t-elif="not flag1 and not flag2">
+                                    <td colspan="5" style="text-align: center; padding: 12px; font-size: 18px;">
+                                        <b>In Words:
+                                            <span t-esc="o.amount2word"/>
+                                        </b>
+                                    </td>
+                                </t>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span style="font-size: 18px;" t-esc="o.narration">
+                </span>
+                </div>
+                <div style="page-break-inside: avoid;"></div>
+                <div class="row d-flex align-items-center" style="margin-top: 50px; page-break-inside: avoid;">
+                    <div class="col-6" style="margin-left: 100px;">
+                        <div style="width: 8cm; height: 3.6cm;">
+                            <!-- The div will take up the same space as the image -->
+                        </div>
+                        <div>
+                            <span style="text-decoration: underline; font-size: 16px;">
+                                <strong>Customer Signature</strong>
+                            </span>
+                        </div>
+                    </div>
+                    <t t-if="o.billed_by_em.sale_signature">
+                        <div class="col-6" style="margin-left: 120px;">
+                            <div>
+                                <img t-if="o.authorized_sign"
+                                        t-attf-src="data:image/*;base64,{{o.billed_by_em.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                            </div>
+                            <div>
+                                <span style="text-decoration: underline; font-size: 16px;">
+                                    <strong>Authorized Signature</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <div class="col-6" style="margin-left: 100px;">
+                            <div style="width: 8cm; height: 3.6cm;">
+                           
+                        </div>
+                            <div>
+                                <span style="text-decoration: underline; font-size: 16px;">
+                                    <strong>Authorized Signature</strong>
+                                </span>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+            <t t-if="o.company_id.id == 2">
+                <table class="table mt-10">
+                    <thead >
+                        <tr>
+                            <th class="text-center" style="padding: 12px; font-size: 18px;">#</th>
+                            <th width="50%" name="th_description" class="text-center" style="padding: 12px; font-size: 18px;">Item Name and Description</th>
+                            <!-- <th width="20%" name="th_part_number" class="text-center" style="padding: 12px; font-size: 18px;">Part Number</th> -->
+                            <!-- <th name="th_warranty" class="text-center" style="padding: 12px; font-size: 18px;">Warranty</th> -->
+                            <th name="th_quantity" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Qty</span>
+                            </th>
+                            <th name="th_priceunit" class="text-center" style="padding: 12px; font-size: 18px;">Rate (
+                                <span t-esc="o.currency_id.symbol"/>)
+                            </th>
+                            <th name="th_subtotal" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Amount</span>
+                                   (
+                                <span t-esc="o.currency_id.symbol"/>)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <t t-set="sn" t-value="0"/>
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-set="current_total" t-value="0"/>
+                        <t t-set="lines" t-value="o.invoice_line_ids.sorted(key=lambda l: (-l.sequence, l.date, l.move_name, -l.id), reverse=True)"/>
+                        <tr t-foreach="lines" t-as="line" t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                            <t t-if="line.display_type == 'product'" name="account_invoice_line_accountable">
+                                <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <span t-esc="sn + 1"/>
+                                    <!-- Display Serial Number -->
+                                    <t t-set="sn" t-value="sn + 1"/>
+                                    <!-- Increment Serial Number -->
+                                </td>
+                                <td class="text-start" name="account_invoice_line_name" style="padding: 12px; font-size: 18px;">
+                                    <b>
+                                        <span t-if="line.product_id" t-field="line.product_id.name" t-options="{'widget': 'text'}"/>
+                                    </b>
+                                    <br/>
+                                    <span t-if="line.product_id" t-field="line.name" t-options="{'widget': 'text'}"/>
+                                </td>
+                                <!-- <td  class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <span t-field="line.lot_serial_number_id.name"></span>
+                                </td> -->
+                                <!-- <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <span t-field="line.warrenty"></span>
+                                </td> -->
+                                <td name="td_quantity" class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <span t-field="line.quantity"></span>
+                                </td>
+                                <td name="td_price_unit" t-attf-class="text-end {{ 'd-none d-md-table-cell' if report_type == 'html' else '' }}" style="padding: 12px; font-size: 18px;">
+                                    <span class="text-nowrap" t-field="line.price_unit"></span>
+                                </td>
+                                <td name="td_subtotal" class="text-end o_price_total" style="padding: 12px; font-size: 18px;">
+                                    <span t-esc="'{:,.2f}'.format(line.price_subtotal)"></span>
+                                </td>
+                            </t>
+                        </tr>
+                        <t t-if="line.tax_ids">
+                            <tr>
+                                <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <strong>Sub Total</strong>
+                                </td>
+                                <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                    <span t-esc="'{:,.2f}'.format(o.amount_untaxed)"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-foreach="lines" t-as="line">
+                            <t t-if="line.tax_ids">
+                                <tr>
+                                    <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-foreach="line.tax_ids" t-as="tax">
+                                            <span>VAT at
+                                                <t t-esc="tax.amount"/>%
+                                            </span>
+                                            <br/>
+                                        </span>
+                                    </td>
+                                    <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                        <span t-foreach="line.tax_ids" t-as="tax">
+                                            <t t-esc="'{:,.2f}'.format(((tax.amount)/100)*line.price_subtotal)"/>
+                                            <br/>
+                                        </span>
+                                        <!-- <span t-esc="o.amount_tax"/> -->
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td colspan="4" class="text-end" style="padding: 12px; font-size: 18px;">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="text-end" style="padding: 12px; font-size: 18px;">
+                                <span t-esc="'{:,.2f}'.format(o.tax_totals['amount_total'])"/>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td colspan="5" style="text-align: center; padding: 12px; font-size: 18px;">
+                                <b>In Words:
+                                    <span t-esc="o.amount2word"/>
+                                </b>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                <t t-if="o.amount_residual">
+                    <div class="row">
+                        <div class="col-6"></div>
+                        <div class="col-6" style="text-align:right">
+                            <strong style="font-size:16px;">Amount Due: </strong>
+                            <b>
+                                <span style="font-size:16px;" t-esc="'{:,.2f}'.format(o.amount_residual)"/>
+                            </b>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//div[@id='right-elements']" position="replace">
+            <div></div>
+        </xpath>
+        <xpath expr="//div[@id='payment_term']" position="replace">
+            <div></div>
+        </xpath>
+    </template>
+</odoo>

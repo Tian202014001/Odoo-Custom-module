@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_picking_form_inherit_10" model="ir.ui.view">
+        <field name="name">stock.picking.delivery.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr = "//sheet//group/group[1]" position="inside">
+                <field name= "billed_by_em"/>
+                <field name= "contact_person_id"/>
+                <field name= "contact_person_name" invisible="1"/>
+                <field name= "contact_person_email" invisible="1"/>
+                <field name= "contact_person_phone" invisible="1"/>
+                <field name= "contact_person_address" invisible="1"/>
+            </xpath>
+            <!-- <xpath expr = "//button[@name='action_confirm']" position="before">
+                <button name="print_delivery_slip" string="Print" class="oe_highlight" type="object"/>
+            </xpath> -->
+            <xpath expr="//notebook/page[@name='operations']/field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="warrenty" string="Warranty"/>
+            </xpath>
+            <xpath expr="//field[@name='contact_person_id']" position="after">
+                <field name="package_no"/>
+                <field name="package_date"/>
+                <field name="total_qty"/>
+            </xpath>
+            <!-- <xpath expr="//notebook/page[@name='extra']/group/group/field[@name='company_id']" position="after">
+                <field name="image" widget="image" string="QR code"/>
+            </xpath> -->
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,564 @@
+<odoo>
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@class='page']//h2" position="replace">
+            
+        </xpath>
+        <xpath expr="//div[@id='informations']" position="replace">
+            <t t-if="doc.company_id.id == 1 or doc.company_id.id == 4 or doc.company_id.id == 3">
+                <div style="margin-left: 1.5cm; margin-right: 1.5cm;">
+                        
+                    <div style="width: 8cm; height: 1cm;">
+                        <!-- The div will take up the same space as the image -->
+                    </div>
+                    <div>
+                        <b style="font-size:16px;">Ref:
+                            <span t-esc="doc.display_name"/>
+                        </b>
+                    </div>
+                    <div>
+                        <strong>Quotation Date:</strong>
+                        <span t-esc="doc.date_order" t-options='{"widget": "date"}'/>
+                    </div>
+                    <div style="width: 8cm; height: 0.5cm;">
+                        <!-- The div will take up the same space as the image -->
+                    </div>
+                    <div>
+                        <b>
+                            <span style="font-size:16px;" t-esc="doc.partner_id.complete_name"/>
+                        </b>
+                    </div>
+                    <div>
+                        <span t-esc="', '.join(filter(None, [doc.partner_id.street, doc.partner_id.city, doc.partner_id.state_id.name, doc.partner_id.zip, doc.partner_id.country_id.name]))"/>
+                    </div>
+                    <div style="width: 8cm; height: 0.5cm;">
+                        <!-- The div will take up the same space as the image -->
+                    </div>
+                    <t t-if="doc.attn">
+                        <div style="margin-top:10px;">
+                            <strong style="font-size:16px;">Attn: </strong>
+                            <span style="font-size:16px;" t-field="doc.attn"/>
+                        </div>
+                    </t>
+                    <t t-if="doc.quotation_body">
+                        <div class="row mt-2">
+                            <div class="col-1">
+                                <b>
+                                    <span style="font-size:16px;">Subject: </span>
+                                </b>
+                            </div>
+                            <div class="col-11">
+                                <b>
+                                    <span style="font-size:16px;"  t-esc="doc.quotation_subject"/>
+                                </b>
+                            </div>
+                        </div>
+                        <div style="width: 8cm; height: 0.5cm;">
+                            <!-- The div will take up the same space as the image -->
+                        </div>
+                        <span t-field="doc.quotation_body"/>
+                        <div class="row d-flex align-items-center" style="margin-top:auto; padding-top:100px">
+                            <div class="col-6" style="margin-left: 70px;">
+                                <img t-if="doc.employee1"
+                                        t-attf-src="data:image/*;base64,{{doc.employee1.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                                <div>
+                                    <b>
+                                        <span t-esc="doc.employee1.name" style="font-size: 16px;"/>
+                                    </b>
+                                </div>
+                                <div>
+                                    <span t-esc="doc.employee1.job_id.name" style="font-size: 16px;"/>
+                                </div>
+                            </div>
+                            <div class="col-6" style="margin-right: 70px;">
+                                <div>
+                                    <img t-if="doc.employee2"
+                                        t-attf-src="data:image/*;base64,{{doc.employee2.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                                </div>
+                                <div>
+                                    <b>
+                                        <span t-esc="doc.employee2.name" style="font-size: 16px;" />
+                                    </b>
+                                </div>
+                                <div>
+                                    <span t-esc="doc.employee2.job_id.name" style="font-size: 16px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="page-break-before: always;"></div>
+                    </t>
+                </div>
+            </t>
+            <t t-if="doc.company_id.id == 2">
+                <t t-if="doc.quotation_body">
+                    <div>
+                        <div style="width: 8cm; height: 0.5cm;">
+                     
+                    </div>
+                        <div>
+                            <b style="font-size:16px;">Ref:
+                                <span t-esc="doc.display_name"/>
+                            </b>
+                        </div>
+                        <div>
+                            <strong>Quotation Date:</strong>
+                            <span t-esc="doc.date_order" t-options='{"widget": "date"}'/>
+                        </div>
+                        <div style="width: 8cm; height: 0.5cm;">
+                      
+                    </div>
+                        <div>
+                            <b>
+                                <span style="font-size:16px;" t-esc="doc.partner_id.complete_name"/>
+                            </b>
+                        </div>
+                        <div>
+                            <span t-esc="', '.join(filter(None, [doc.partner_id.street, doc.partner_id.city, doc.partner_id.state_id.name, doc.partner_id.zip, doc.partner_id.country_id.name]))"/>
+                        </div>
+                        <div style="width: 8cm; height: 0.5cm;">
+                       
+                        </div>
+                        <div class="row">
+                            <div class="col-1">
+                                <b>
+                                    <span style="font-size:18px;">Subject: </span>
+                                </b>
+                            </div>
+                            <div class="col-11">
+                                <b>
+                                    <span t-esc="doc.quotation_subject"/>
+                                </b>
+                            </div>
+                        </div>
+                        <div style="width: 8cm; height: 0.5cm;">
+                            
+                            </div>
+                        <div>
+                            <span t-esc="doc.quotation_body"/>
+                        </div>
+                        <div class="row d-flex align-items-center" style="margin-top: auto; height:100%" >
+                            <div class="col-6" style="margin-left: 100px;">
+                                <img t-if="doc.employee1"
+                                        t-attf-src="data:image/*;base64,{{doc.employee1.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                                <div>
+                                    <b>
+                                        <span t-esc="doc.employee1.name" style="font-size: 16px;"/>
+                                    </b>
+                                </div>
+                                <div>
+                                    <span t-esc="doc.employee1.job_id.name" style="font-size: 16px;"/>
+                                </div>
+                            </div>
+                            <div class="col-6" style="margin-right: 70px;">
+                                <div>
+                                    <img t-if="doc.employee2"
+                                        t-attf-src="data:image/*;base64,{{doc.employee2.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                                </div>
+                                <div>
+                                    <b>
+                                        <span t-esc="doc.employee2.name" style="font-size: 16px;" />
+                                    </b>
+                                </div>
+                                <div>
+                                    <span t-esc="doc.employee2.job_id.name" style="font-size: 16px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="page-break-before: always;"></div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+        <xpath expr="//table[@class='table table-sm o_main_table table-borderless mt-4']" position="replace">
+            <t t-if="doc.company_id.id == 1 or doc.company_id.id == 4 or doc.company_id.id == 3">
+                <div style="margin-top:40px;">
+                    <h2 class="text-center" style="color:#1EAF89; ">Financial Offer</h2>
+                    <hr/>
+                </div>
+                <t t-set="has_lot" t-value="False"/>
+                <!-- Loop through doc.order_line to check if any line has lot_id -->
+                <!-- <t t-foreach="doc.order_line" t-as="line">
+                    <t t-if="line.lot_serial_number_id">
+                        <t t-set="has_lot" t-value="True"/>
+                    </t>
+                </t> -->
+                <table class="table table-sm o_main_table mt-4" style="border: 1px solid black;">
+                    <thead style="display: table-row-group; background-color: #1EAF89; color: white;">
+                        <tr>
+                            <th name="th_SN" class="text-center" style="padding: 12px; font-size: 18px;">#</th>
+                            <th width="15%" name="th_product" class="text-center" style="padding: 12px; font-size: 18px;">Item Name</th>
+                            <!-- <t t-if="has_lot"> -->
+                            <th width="20%" name="th_product" class="text-center" style="padding: 12px; font-size: 18px;">Part No</th>
+                            <!-- </t> -->
+                            <th width="30%" name="th_description" class="text-center" style="padding: 12px; font-size: 18px;">Product Description</th>
+                            <th name="th_quantity" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Qty</span>
+                            </th>
+                            <th name="th_priceunit" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Unit Price</span>
+                                <br/>(
+                                <span t-esc="doc.currency_id.symbol"/>)
+                            </th>
+                            <th name="th_subtotal" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Total Price
+                                    <br/>(
+                                    <span t-esc="doc.currency_id.symbol"/>)</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <t t-set="sn" t-value="0"/>
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-foreach="lines_to_report" t-as="line">
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <td class="text-center">
+                                        <span t-esc="sn + 1"/>
+                                        <!-- Display Serial Number -->
+                                        <t t-set="sn" t-value="sn + 1"/>
+                                        <!-- Increment Serial Number -->
+                                    </td>
+                                    <td class="text-start" name="td_name">
+                                        <span t-field="line.product_template_id.name"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-field="line.lot_serial_number_id"/>
+                                    </td>
+                                    <td class="text-start">
+                                        <span t-field="line.name"/>
+                                    </td>
+                                    <td class="text-end" name="td_quantity">
+                                        <span t-field="line.product_uom_qty"/>
+                                    </td>
+                                    <td class="text-end" name="td_priceunit">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                        <span t-esc="'{:,.2f}'.format(line.price_subtotal)"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                        <t t-if="line.tax_id">
+                            <tr>
+                                <td colspan="6" class="text-end" >
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-end" >
+                                    <span t-esc="'{:,.2f}'.format(doc.amount_untaxed)"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                        <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
+                            <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
+                            <t t-foreach="tax_totals['groups_by_subtotal'][subtotal_to_show]" t-as="amount_by_group">
+                                <t t-set="display_tax_base" t-value="tax_totals['display_tax_base']"/>
+                                <tr class="text-end" >
+                                    <t t-if="tax_totals['display_tax_base']">
+                                        <td colspan="6">
+                                            <span t-esc="amount_by_group['tax_group_name']"/>
+                                            <!-- <span t-if="not amount_by_group['hide_base_amount']" class="text-nowrap">
+on
+                                                <t t-esc="amount_by_group['formatted_tax_group_base_amount']"/>
+                                            </span> -->
+                                        </td>
+                                        <td class="text-end o_price_total" >
+                                            <span class="text-nowrap" t-out="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">1.05</span>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td colspan="6">
+                                            <span t-out="amount_by_group['tax_group_name']">Tax 15%</span>
+                                            <!-- <span> on </span>
+                                            <span class="text-nowrap" t-out="amount_by_group['formatted_tax_group_base_amount']">27.00</span> -->
+                                        </td>
+                                        <td class="text-end o_price_total">
+                                            <span class="text-nowrap" t-esc="'{:,.2f}'.format(amount_by_group['tax_group_amount'])">4.05</span>
+                                        </td>
+                                    </t>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td colspan="6" class="text-end">
+                                    <strong>Grand Total</strong>
+                                </td>
+                                <td class="text-end" >
+                                    <span t-esc="'{:,.2f}'.format(doc.tax_totals['amount_total'])"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="7" style="text-align: center; padding: 12px; font-size: 18px;">
+                                    <b>In Words:
+                                        <span t-esc="doc.amount2word"/>
+                                    </b>
+                                </td>
+                            </tr>
+                            <!-- <tr class="text-start" width="100%">
+                                <td width="70%">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-end" width="30%">
+                                    <span t-out="tax_totals['formatted_amount_total']">31.05</span>
+                                </td>
+                            </tr> -->
+                        </t>
+                    </tbody>
+                </table>
+                <div style="page-break-inside: avoid;">
+                    <span  t-field="doc.note">
+                </span>
+                    <t t-if="doc.company_id.id ==1 or doc.company_id.id == 4 or doc.company_id.id == 3">
+                        <p>Payment Terms:
+                            <span  t-field="doc.payment_term_id"/>
+                        </p>
+                    </t>
+                </div>
+                <div style="margin-top: 10px; page-break-inside: avoid;">
+                    <p>With thanks &amp; best regards</p>
+                </div>
+                <div class="row d-flex align-items-center" style="margin-top: 80px; page-break-inside: avoid;">
+                    <div class="col-6" style="margin-left: 100px;">
+                        <img t-if="doc.employee1"
+                                        t-attf-src="data:image/*;base64,{{doc.employee1.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                        <div>
+                            <b>
+                                <span t-esc="doc.employee1.name" style="font-size: 16px;"/>
+                            </b>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee1.job_id.name" style="font-size: 16px;"/>
+                        </div>
+                    </div>
+                    <div class="col-6" style="margin-right: 80px;">
+                        <div>
+                            <img t-if="doc.employee2"
+                                        t-attf-src="data:image/*;base64,{{doc.employee2.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                        </div>
+                        <div>
+                            <b>
+                                <span t-esc="doc.employee2.name" style="font-size: 16px;" />
+                            </b>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee2.job_id.name" style="font-size: 16px;"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <t t-if="doc.company_id.id == 2">
+                <div style="text-align: right; margin-top:40px;">
+                    <h2>Quotation</h2>
+                    <b>
+                        <span style="font-size:22px;" t-field="doc.display_name"/>
+                    </b>
+                </div>
+                <div class="row" style="margin-top:40px;">
+                    <div class="col-7">
+                        <span style="font-size:16px;">Proposal To</span>
+                        <br/>
+                        <b>
+                            <sapn style="font-size:16px;" t-esc="doc.partner_id.complete_name"/>
+                        </b>
+                        <div>
+                            <span style="font-size:16px;" t-esc="', '.join(filter(None, [doc.partner_id.street, doc.partner_id.city, doc.partner_id.state_id.name, doc.partner_id.zip, doc.partner_id.country_id.name]))"/>
+                        </div>
+                    </div>
+                    <div style="text-align: right;" class="col-5">
+                        <strong style="font-size:16px;"> Quotation Date:</strong>
+                        <span style="font-size:16px;" t-field="doc.date_order" t-options='{"format": "dd-MM-yyyy"}'/>
+                        <br/>
+                        <strong style="font-size:16px;">Payment Terms:</strong>
+                        <span style="font-size:16px;" t-field="doc.payment_term_id"/>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:16px;">
+                    <span style="font-size:16px;">Attn: </span>
+                    <span style="font-size:16px;" t-field="doc.attn"/>
+                </div>
+                <div class="row" style="margin-top:20px;">
+                    <div class="col-1">
+                        <b>
+                            <span style="font-size:18px;">Subject: </span>
+                        </b>
+                    </div>
+                    <div class="col-11">
+                        <span t-esc="doc.quotation_subject"/>
+                    </div>
+                </div>
+                <table class="table table-sm o_main_table mt-4">
+                    <thead style="display: table-row-group;">
+                        <tr>
+                            <th name="th_SN" class="text-center" style="padding: 12px; font-size: 18px;">S/N</th>
+                            <!-- <th width="30%" name="th_product" class="text-center" style="padding: 12px; font-size: 18px;">Product</th> -->
+                            <th  name="th_description" class="text-center" style="padding: 12px; font-size: 18px;">Item &amp; Description</th>
+                            <th name="th_quantity" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Qty</span>
+                            </th>
+                            <th name="th_priceunit" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Unit Price</span>
+                                <br/>(
+                                <span t-esc="doc.currency_id.symbol"/>)
+                            </th>
+                            <th name="th_subtotal" class="text-center" style="padding: 12px; font-size: 18px;">
+                                <span>Total Price
+                                    <br/>(
+                                    <span t-esc="doc.currency_id.symbol"/>)</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <t t-set="sn" t-value="0"/>
+                        <t t-set="current_subtotal" t-value="0"/>
+                        <t t-foreach="lines_to_report" t-as="line">
+                            <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal"/>
+                            <tr t-att-class="'bg-200 fw-bold o_line_section' if line.display_type == 'line_section' else 'fst-italic o_line_note' if line.display_type == 'line_note' else ''">
+                                <t t-if="not line.display_type">
+                                    <td class="text-center">
+                                        <span t-esc="sn + 1"/>
+                                        <!-- Display Serial Number -->
+                                        <t t-set="sn" t-value="sn + 1"/>
+                                        <!-- Increment Serial Number -->
+                                    </td>
+                                    <!-- <td class="text-start" name="td_name">
+                                        <span t-field="line.product_template_id.name"/>
+                                    </td> -->
+                                    <td class="text-start">
+                                        <span t-field="line.name"/>
+                                        <br/>
+                                        <span t-field="line.product_template_id.name"/>
+                                    </td>
+                                    <td class="text-end" name="td_quantity">
+                                        <span t-field="line.product_uom_qty"/>
+                                    </td>
+                                    <td class="text-end" name="td_priceunit">
+                                        <span t-field="line.price_unit"/>
+                                    </td>
+                                    <td t-if="not line.is_downpayment" name="td_subtotal" class="text-end o_price_total">
+                                        <span t-esc="'{:,.2f}'.format(line.price_subtotal)"/>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                        <t t-if="line.tax_id">
+                            <tr>
+                                <td colspan="4" class="text-end" >
+                                    <strong>Sub Total</strong>
+                                </td>
+                                <td class="text-end" >
+                                    <span t-esc="'{:,.2f}'.format(doc.amount_untaxed)"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-foreach="doc.order_line" t-as="line">
+                            <t t-if="line.tax_id">
+                                <tr>
+                                    <td colspan="4" class="text-end" >
+                                        <span t-foreach="line.tax_id" t-as="tax">
+                                            <span>VAT at
+                                                <t t-esc="tax.amount"/>%
+                                            </span>
+                                            <br/>
+                                        </span>
+                                    </td>
+                                    <td class="text-end" >
+                                        <span t-foreach="line.tax_id" t-as="tax">
+                                            <t t-esc="'{:,.2f}'.format(((tax.amount)/100)*line.price_subtotal)"/>
+                                            <br/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                        <tr>
+                            <td colspan="4" class="text-end">
+                                <strong>Total</strong>
+                            </td>
+                            <td class="text-end" >
+                                <span t-esc="'{:,.2f}'.format(doc.tax_totals['amount_total'])"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 12px; font-size: 18px;">
+                                <b>In Words:
+                                    <span t-esc="doc.amount2word"/>
+                                </b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="page-break-before: always;"></div>
+                <div style="margin-top:5px;">
+                    <span  t-field="doc.note">
+                </span>
+                </div>
+                <div style="margin-top: 10px;">
+                    <p>With thanks &amp; best regards</p>
+                </div>
+                <div class="row d-flex align-items-center" style="margin-top: 50px;">
+                    <div class="col-6" style="margin-left: 100px;">
+                        <img t-if="doc.employee1"
+                                        t-attf-src="data:image/*;base64,{{doc.employee1.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                        <div>
+                            <b>
+                                <span t-esc="doc.employee1.name" style="font-size: 16px;"/>
+                            </b>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee1.job_id.name" style="font-size: 16px;"/>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee1.department_id.name" style="font-size: 16px;"/>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee1.company_id.display_name" style="font-size: 16px;"/>
+                        </div>
+                    </div>
+                    <div class="col-6" style="margin-right: 80px;">
+                        <div>
+                            <img t-if="doc.employee2"
+                                        t-attf-src="data:image/*;base64,{{doc.employee2.sale_signature}}"
+                                        style="resize:both; max-height: 4cm; max-width: 8cm;" />
+                        </div>
+                        <div>
+                            <b>
+                                <span t-esc="doc.employee2.name" style="font-size: 16px;" />
+                            </b>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee2.job_id.name" style="font-size: 16px;"/>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee2.department_id.name" style="font-size: 16px;"/>
+                        </div>
+                        <div>
+                            <span t-esc="doc.employee2.company_id.display_name" style="font-size: 16px;"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+        <!-- <xpath expr="//div[@class='page']" position="after">
+            <div>
+                <p>aaaaaaaaaaaaaaaaaaaa</p>
+            </div>
+        </xpath> -->
+        <xpath expr="//div[@name='so_total_summary']" position="replace">
+            <div>
+        </div>
+        </xpath>
+        <xpath expr="//span[@name='order_note']" position="replace">
+            <div>
+        </div>
+        </xpath>
+        <xpath expr="//p[@t-if='not is_html_empty(doc.payment_term_id.note)']" position="replace">
+        </xpath>
+    </template>
+</odoo>
